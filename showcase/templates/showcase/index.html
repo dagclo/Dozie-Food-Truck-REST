@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+</head>
+<body>
+
+<p>Click the button to get list of food items.</p>
+
+<button onclick="getLocation()">Try It</button>
+
+<p id="demo"></p>
+<p id="food"></p>
+
+<script>
+var x = document.getElementById("demo");
+var y = document.getElementById("food");
+
+function getLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(getfoodnearme);
+    } else { 
+        x.innerHTML = "Geolocation is not supported by this browser.";
+    }
+}
+
+function getfoodnearme(position) {
+    x.innerHTML = "Latitude: " + position.coords.latitude + 
+                "<br>Longitude: " + position.coords.longitude;
+    latitude = 37.78;
+    longitude = -122.4;
+    $.get( "http://127.0.0.1:8000/api/foodnearme",
+        {lat : latitude, lng : longitude},
+        function( data, status ) {
+            
+            for(fooditem in data)
+            {
+                y.innerHTML += "/nFood: " + fooditem;
+            }
+        }, "json");
+}
+</script>
+
+</body>
+</html>
