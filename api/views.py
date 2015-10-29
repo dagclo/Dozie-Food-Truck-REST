@@ -51,7 +51,10 @@ class FoodNearMe(Resource, FoodQuery):
     def get(self, request, **kwargs):
         lat = request.GET.get('lat')
         long = request.GET.get('lng')
-        query = {'$where': 'within_circle(location, ' + lat + ', ' + long + ', 1000)', 'status' : 'APPROVED', '$limit' : '5', '$offset' : '0'}    
+        meters = request.GET.get('meters')
+        if meters == None:
+            meters = 1000
+        query = {'$where': 'within_circle(location, ' + lat + ', ' + long + ', ' + meters + ')', 'status' : 'APPROVED', '$limit' : '5', '$offset' : '0'}    
         r = requests.get(self.createFoodTruckUrl(query))
         fooditemDict = self.ProcessFoodItems(r.json())
         result = json.dumps(fooditemDict)

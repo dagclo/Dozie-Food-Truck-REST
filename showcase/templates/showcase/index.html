@@ -34,18 +34,16 @@ function getfoodnearme(position) {
     latitude = 37.78;
     longitude = -122.4;
     $.get( "/api/foodnearme",
-        {lat : latitude, lng : longitude},
-        function( data, status ) {
-            
+        {lat : latitude, lng : longitude, meters : 1000},
+        function( data, status ) {            
             for(fooditem in data)
             {
                 sfList.innerHTML += "<li>" + fooditem + "</li>";
             }
         }, "json");
     $.get( "/api/foodnearme",
-        {lat : position.coords.latitude, lng : position.coords.longitude},
-        function( data, status ) {
-            
+        {lat : position.coords.latitude, lng : position.coords.longitude, meters : 500},
+        function( data, status ) {            
             for(fooditem in data)
             {
                 nearUList.innerHTML += "<li>" + fooditem + "</li>";
