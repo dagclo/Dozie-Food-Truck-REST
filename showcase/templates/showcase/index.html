@@ -10,11 +10,15 @@
 <button onclick="getLocation()">Try It</button>
 
 <p id="demo"></p>
-<p id="food"></p>
+<p> Food Near you (if empty none was found)</p>
+<ul id="foodnearyou"></ul>
+<p>Food near 37.78, -122.4</p>
+<ul id="foodinsf"></ul>
 
 <script>
 var x = document.getElementById("demo");
-var y = document.getElementById("food");
+var sfList = document.getElementById("foodinsf");
+var nearUList = document.getElementById("foodnearyou");
 
 function getLocation() {
     if (navigator.geolocation) {
@@ -29,13 +33,22 @@ function getfoodnearme(position) {
                 "<br>Longitude: " + position.coords.longitude;
     latitude = 37.78;
     longitude = -122.4;
-    $.get( "http://127.0.0.1:8000/api/foodnearme",
+    $.get( "/api/foodnearme",
         {lat : latitude, lng : longitude},
         function( data, status ) {
             
             for(fooditem in data)
             {
-                y.innerHTML += "/nFood: " + fooditem;
+                sfList.innerHTML += "<li>" + fooditem + "</li>";
+            }
+        }, "json");
+    $.get( "/api/foodnearme",
+        {lat : position.coords.latitude, lng : position.coords.longitude},
+        function( data, status ) {
+            
+            for(fooditem in data)
+            {
+                nearUList.innerHTML += "<li>" + fooditem + "</li>";
             }
         }, "json");
 }
