@@ -63,7 +63,7 @@ class FoodNearMe(Resource, FoodQuery):
            return HttpResponseBadRequest('<h1>meters parameter can not be less than zero</h1>') 
         if lat == None:
             return HttpResponseBadRequest('<h1>Parameter lat is missing</h1>')
-        elif lng == None:
+        elif long == None:
             return HttpResponseBadRequest('<h1>Parameters lng are missing</h1>')
         query = {'$where': 'within_circle(location, ' + lat + ', ' + long + ', ' + meters + ')', 'status' : 'APPROVED', '$limit' : '5', '$offset' : '0'}    
         r = requests.get(self.createFoodTruckUrl(query))
